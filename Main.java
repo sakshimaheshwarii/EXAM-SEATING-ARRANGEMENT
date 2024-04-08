@@ -1,5 +1,41 @@
 import java.util.Scanner;
 
+class SeatingArrangement {
+    private int[][] seats;
+
+    public SeatingArrangement(int rows, int cols) {
+        seats = new int[rows][cols];
+    }
+
+    public void assignSeats(int strength) {
+        int rollNum = 1;
+        for (int i = 0; i < seats.length; i++) {
+            for (int j = 0; j < seats[i].length; j++) {
+                if (rollNum <= strength) {
+                    seats[i][j] = rollNum;
+                    rollNum++;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    public void printArrangement() {
+        System.out.println("Seating Arrangement:");
+        for (int i = 0; i < seats.length; i++) {
+            for (int j = 0; j < seats[i].length; j++) {
+                if (seats[i][j] == 0) {
+                    System.out.print(" ");
+                } else {
+                    System.out.print(seats[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+}
+
 public class Main {
     static String new_password() {
         Scanner sc = new Scanner(System.in);
@@ -24,6 +60,7 @@ public class Main {
 
         if (username.equals(savedUsername) && password.equals(savedPassword)) {
             System.out.println("Login Successful!");
+            arrangementManagement();
         } else {
             System.out.println("Change password?");
             savedPassword = new_password();
@@ -33,87 +70,30 @@ public class Main {
         }
     }
 
-    static void adminLogin(String savedPassword) {
-        String savedUsername = "hello java";
+    static void arrangementManagement() {
         Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the number of rows: ");
+        int rows = sc.nextInt();
+        System.out.println("Enter the number of columns: ");
+        int cols = sc.nextInt();
 
-        System.out.println("Welcome to the Login Page");
-        System.out.println("(Username and password are case sensitive)");
+        SeatingArrangement arrangement = new SeatingArrangement(rows, cols);
 
-        System.out.print("Username: ");
-        String username = sc.nextLine();
-
-        System.out.print("Password: ");
-        String password = sc.nextLine();
-
-        if (username.equals(savedUsername) && password.equals(savedPassword)) {
-            System.out.println("Login Successful!");
-            Arrangement();
-        } else {
-            System.out.println("Change password?");
-            savedPassword = new_password();
-            System.out.println("Return to the login page");
-            System.out.println();
-            adminLogin(savedPassword);
-
-        }
-    }
-
-    static void Arrangement() {
-        System.out.println("Greetings, please let me know of which group's arrangement you are looking for.");
-        Scanner sc = new Scanner(System.in);
-        int group = sc.nextInt();
-        System.out.println("Welcome to the group " + group);
-        System.out.println();
         System.out.print("Enter the strength of your group: ");
         int strength = sc.nextInt();
-
-        System.out.print("Enter the number of rows: ");
-        int Rows = sc.nextInt();
-
-        System.out.print("Enter the number of columns: ");
-        int Cols = sc.nextInt();
-
-        int totalSeats = Rows * Cols;
-        if (strength > totalSeats) {
-            System.out.println("There are not enough seats for all the students!");
-        }
-        int[][]arr = new int[Rows][Cols];
-
-        // Assign seats to students
-        int rollNum = 1;
-        for (int i = 0; i < Rows; i++) {
-            for (int j = 0; j < Cols; j++) {
-                if (rollNum<= strength) {
-                    arr[i][j] = rollNum;
-                    rollNum++;
-                }
-                else{
-                    System.out.println("Remaining students need to sit in another room");
-                }
-            }
-        }
-
-        // Print the seating arrangement
-        System.out.println("Seating Arrangement:");
-        for (int i = 0; i < Rows; i++) {
-            for (int j = 0; j < Cols; j++) {
-                if (arr[i][j] == 0) System.out.print(" ");
-                else System.out.print(arr[i][j]+" ");
-            }
-            System.out.println();
-            System.out.println("ARRANGEMENT CREATED.");
-          logOut();
-        }
+        arrangement.assignSeats(strength);
+        arrangement.printArrangement();
+        logOut();
     }
-    static void studentLogin(){
-        Scanner sc= new Scanner(System.in);
+
+    static void studentLogin() {
+        Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to the Login Page");
         System.out.println("(Username and password are case sensitive)");
         String savedUsername = "hello java";
         String savedPassword = "password";
-        
-        System.out.print("enter Student Id:");
+
+        System.out.print("Enter Student Id: ");
         String id = sc.nextLine();
 
         System.out.print("Password: ");
@@ -121,33 +101,24 @@ public class Main {
 
         if (id.equals(savedUsername) && password.equals(savedPassword)) {
             System.out.println("Login Successful!");
-            System.out.println("Enter your group: ");
-            int group=sc.nextInt();
-            System.out.println("you belong to the G"+group);
-            searchSeat();
-            logOut();
-        } 
+            arrangementManagement();
+        }
     }
-     static void searchSeat() {
-        Scanner sc=new Scanner(System.in);
-        System.out.print("Enter your Id: ");
-        String id=sc.nextLine();
-        //INCOMPLETENCE HERE
+
+    static void logOut() {
+        System.exit(0);
     }
-static void logOut(){
-    System.exit(0);
-}
+
     public static void main(String[] args) {
         System.out.println("WELCOME TO XYZ UNIVERSITY");
         System.out.println("HERE YOU CAN FIND THE SEATING ARRANGEMENT FOR YOUR EXAM.");
         System.out.println("WE WISH YOU ALL THE VERY BEST FOR THIS.");
         System.out.println();
-        System.out.println("You are Staff Or Student?");
-        Scanner sc=new Scanner(System.in);
+        System.out.println("Are you a Student or Faculty?");
+        Scanner sc = new Scanner(System.in);
         System.out.println("1. Student\n2: Faculty");
-        int num=sc.nextInt();
-        switch(num)
-        {
+        int num = sc.nextInt();
+        switch (num) {
             case 1:
                 studentLogin();
                 break;
